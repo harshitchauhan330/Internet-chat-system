@@ -1,0 +1,41 @@
+gcc -std=c11 -o server server.c
+
+// compile server
+
+gcc -std=c11 -o client client.c
+
+// compile client
+
+//running server
+./server
+
+//running client
+./client
+
+// test commands
+
+On each client, log in with valid credentials:
+
+login admin password
+Expected response:
+
+Server: Login successful
+
+Create a chat room using:
+ 
+create room1
+Expected response:
+
+ 
+Server: Room created
+Join the created chat room: 
+ 
+enter room1
+Expected response:
+
+ 
+Server: Entered room
+Step 4: Broadcast a Message
+Send a message to the room:
+
+Hello, everyone!

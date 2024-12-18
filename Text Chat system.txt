@@ -1,0 +1,87 @@
+
+
+Create a server and client for an internet text chat system in C.
+
+The seemingly picky details are because of chatgpt. If any are skipped
+I will have to assume the worst.
+
+The server should, as servers usually do, wait passively for connections
+made by the client. It must be capable of accepting and servicing a large
+number of clients at the same time.
+
+The server will support a number of separate "chat rooms". A client may
+log in to any chat room its user wants, and from then on everything that
+a user types will be sent to every other user in the same chat room.
+
+A client doesn't have very much to do. It must be able to deal with
+its user entering a line of text and messages sent from the server
+simultaneously. Whenever (with a few exceptions) the user types a line of
+text the client simply sends it to the server. When the client receives
+text from the server, it must display the username of the sender followed
+by the time, followed by the message itself.
+
+The client must report any communication failures, and attempt to reconnect
+after a moderate pause after any unintended disconnection. re-connection
+must be totally automatic, resending the login command and re-entering
+the chat room, if any, that the user was in at the time of disconnection.
+
+The exceptions
+if the first word on the typed line is "login", there should be one other
+word on the line, being a username. The client must prompt for and read a
+password (with disguised echo, see below) and send all three (login, username,
+password) to the server. Do NOT use getpass, modify the terminal attributes
+as in class.
+if the first word on the typed line is "create", there should be one other
+word on the line, being the name of a chat room that does not exist yet.
+if the first word on the typed line is "enter", there should be one other
+word on the line, being the name of a chat room that does exist.
+if the (only) word on the line is "who", send it to the server as usual,
+but expect a response that lists all currently connected users and the
+chat room they are in, if any.
+if the first word on the line is logout, disconnect from the server and
+exit the program.
+
+"Disguised echo": for this you may of course use the code posted for class
+on 12th November, you are not expected to work all that out. When the user
+is entering a password, each character typed must just cause a * to appear
+on the screen so that nobody spying sees the password. The * must appear
+just about immediately as each character is typed. While the password is
+being read, the backspace key must still work, allowing typing mistakes
+to be corrected and making the last * disappear. Be careful of special
+cases, think about what they may be.
+
+Server actions.
+The server must have a file containing usernames and passwords for all
+known users. On receiving the "login" command, it must verify the password.
+If incorrect it must send back an error message; if correct it must send
+back a short acknowledgement. Until a user has successfully logged in
+the server will do nothing in response to their messages except for sending
+back a suitable eror message.
+Clearly the server must keep track of which chat room each user is in,
+but that is really the only manner in which a chat room exists. Don't expect
+them to be a significant part of your coding. A user can only be in one chat
+room at a time, so entering one means exiting any that the user is currently
+in.
+The server must respond appropriately to all of the commands listed above.
+There is to be a fake username called *, which the server uses when responding
+to commands or sending anything other than a message from another user. That
+way the client can display responses in an unambiguous way.
+The client is required to show the username of the sender of any message,
+so obviously the server must send that with the message.
+When a user enters or leaves a chat room, all other uses of that chat
+room must be informed. Logging out, or being diconnected through a network
+or software error countd as leaving the chat room. If contact with a user
+is lost (other than through a logout) inform the other users in the same
+chat room.
+If the server is stopped (by its "user" typing control-C) it must inform
+all users, close all sockets, and free all dynamic memory. But be sure to
+be safe: if the program goes wrong while closing down in this manner, a
+second control-C must have its usual effect and end the process.
+
+You must use the poll function, both in the client to wait for the server
+and the keyboard simultaneously, and in the server to wait for communication
+from all clients simultaneously. You must use the TCP protocol with the
+system functions examined in class.
+
+Report all errors usefully.
+Keep the process clean - use free appropriately, etc.
